@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator BMI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+        <h1 class="text-2xl font-bold text-center mb-6">Kalkulator BMI</h1>
+        <div class="mb-4">
+            <label for="weight" class="block text-sm font-medium text-gray-700">Berat Badan (kg)</label>
+            <input type="number" id="weight" class="mt-1 p-2 w-full border rounded-md" placeholder="Masukkan berat badan" step="0.1">
+        </div>
+        <div class="mb-4">
+            <label for="height" class="block text-sm font-medium text-gray-700">Tinggi Badan (cm)</label>
+            <input type="number" id="height" class="mt-1 p-2 w-full border rounded-md" placeholder="Masukkan tinggi badan" step="0.1">
+        </div>
+        <button onclick="calculateBMI()" class="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">Hitung BMI</button>
+        <div id="result" class="mt-6 text-center"></div>
+    </div>
+
+    <script>
+        function calculateBMI() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value) / 100; // Convert cm to meters
+            const resultDiv = document.getElementById('result');
+
+            if (isNaN(weight) || isNaN(height) || weight <= 0 || height <= 0) {
+                resultDiv.innerHTML = '<p class="text-red-500">Masukkan berat dan tinggi badan yang valid!</p>';
+                return;
+            }
+
+            const bmi = (weight / (height * height)).toFixed(2);
+            let category = '';
+            let advice = '';
+
+            if (bmi < 18.5) {
+                category = 'Kurus';
+                advice = 'Berat badan Anda di bawah normal. Pertimbangkan untuk berkonsultasi dengan ahli gizi untuk meningkatkan asupan kalori sehat.';
+            } else if (bmi >= 18.5 && bmi < 25) {
+                category = 'Normal';
+                advice = 'Berat badan Anda ideal. Pertahankan pola makan sehat dan olahraga teratur!';
+            } else if (bmi >= 25 && bmi < 30) {
+                category = 'Overweight';
+                advice = 'Berat badan Anda di atas normal. Coba kurangi kalori dan tingkatkan aktivitas fisik.';
+            } else {
+                category = 'Obesitas';
+                advice = 'Berat badan Anda dalam kategori obesitas. Konsultasikan dengan dokter atau ahli gizi untuk rencana penurunan berat badan.';
+            }
+
+            resultDiv.innerHTML = `
+                <p class="text-lg font-semibold">BMI Anda: ${bmi}</p>
+                <p class="text-md">Kategori: ${category}</p>
+                <p class="text-sm text-gray-600 mt-2">${advice}</p>
+            `;
+        }
+    </script>
+</body>
+</html>
